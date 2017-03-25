@@ -1,0 +1,24 @@
+language: python
+dist: trusty
+sudo: required
+python:
+    - 2.7
+install:
+    - sudo apt-add-repository -y ppa:ubuntu-lxc/lxd-stable
+    - sudo apt-get update -q
+    - sudo apt-get install -qqy lxd
+    - sudo pip install ansible
+env:
+    - DISTRO=debian
+    - DISTRO=fedora
+script:
+    - sudo usermod -a -G lxd $USER
+    - ssh-keygen -f $HOME/.ssh/id_rsa -N "" -C "home-assistant-ansible-test"
+    - sudo lxd init --auto
+    # Put the role somewhere it will be detected by ansible-playbook
+    - mkdir roles
+    - ln -s $(pwd) roles/home-assistant
+    # We have to do this to get the new lxd group membership
+    - sudo -E su $USER -c 'lxc network create test-network; lxc network attach-profile test-network default eth0; ./lxd-tests/00-basic-install.sh $HOME/.ssh/id_rsa.pub $DISTRO'
+after_failure:
+    - sudo -E su $USER -c 'CONTAINER_NAME=$(lxc list -c n | tail -n+3 | grep -o " .* "); lxc exec $CONTAINER_NAME -- cat /var/log/syslog'
