@@ -1,0 +1,11 @@
+IMAGE_NAME=images:fedora/25/amd64
+NETWORK_SERVICE_NAME=systemd-networkd
+
+network_test() {
+    echo curl http://www.google.com --fail
+}
+
+prepare_container_for_ansible() {
+    lxc exec "$CONTAINER_REMOTE":"$CONTAINER_NAME" -- dnf install -y openssh-server python2 python2-dnf
+    lxc exec "$CONTAINER_REMOTE":"$CONTAINER_NAME" -- /sbin/service sshd start
+}

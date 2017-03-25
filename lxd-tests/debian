@@ -1,0 +1,12 @@
+IMAGE_NAME=images:debian/jessie/amd64
+NETWORK_SERVICE_NAME=networking
+
+network_test() {
+    echo systemctl status networking
+}
+
+prepare_container_for_ansible() {
+    lxc exec "$CONTAINER_REMOTE":"$CONTAINER_NAME" -- apt-get update
+    lxc exec "$CONTAINER_REMOTE":"$CONTAINER_NAME" -- apt-get -qqy install --no-install-recommends \
+        openssh-server python-minimal python2.7-stdlib sudo
+}
