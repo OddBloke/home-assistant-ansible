@@ -5,4 +5,25 @@
 # Licensed under MIT. All rights reserved.
 #
 ---
-
+packages:
+    Debian:
+        always:
+            - python3
+        nonvirtualenv:
+            - gcc
+            - python3-dev
+            - python3-pip
+    Fedora:
+        always:
+            - firewalld
+            - libselinux-python
+            - python-firewall
+            - python2
+            - python2-dnf
+            - python3
+            - redhat-rpm-config
+            - which
+        nonvirtualenv:
+            - gcc
+            - python3-devel
+            - python3-pip
