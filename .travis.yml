@@ -13,6 +13,8 @@ env:
     - DISTRO=fedora TEST=00-basic-install
     - DISTRO=debian TEST=01-virtualenv-install
     - DISTRO=fedora TEST=01-virtualenv-install
+    - DISTRO=debian TEST=02-basic-versioned-install
+    - DISTRO=fedora TEST=02-basic-versioned-install
 script:
     - sudo usermod -a -G lxd $USER
     - ssh-keygen -f $HOME/.ssh/id_rsa -N "" -C "home-assistant-ansible-test"
