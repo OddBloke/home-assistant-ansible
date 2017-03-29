@@ -16,7 +16,7 @@ packages:
             - virtualenv
         nonvirtualenv:
             - python3-pip
-    Fedora:
+    RedHat:
         always:
             - firewalld
             - gcc

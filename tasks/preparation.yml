@@ -18,18 +18,18 @@
 - name: install always-required packages
   package: name={{ item }} state=present
   with_items:
-  - "{{ packages[ansible_distribution].always }}"
+  - "{{ packages[ansible_os_family].always }}"
 
 - name: install non-virtualenv packages
   package: name={{ item }} state=present
   with_items:
-  - "{{ packages[ansible_distribution].nonvirtualenv }}"
+  - "{{ packages[ansible_os_family].nonvirtualenv }}"
   when: not ha_use_virtualenv
 
 - name: install virtualenv packages
   package: name={{ item }} state=present
   with_items:
-  - "{{ packages[ansible_distribution].virtualenv }}"
+  - "{{ packages[ansible_os_family].virtualenv }}"
   when: ha_use_virtualenv
 
 - name: install Debian-specific pip packages
