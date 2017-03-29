@@ -13,3 +13,7 @@ ha_user: ha
 ha_port: 8123
 # modify motd
 motd_modification: false
+# Install in to a virtualenv instead of the system Python
+ha_use_virtualenv: false
+# The default directory to use for virtualenv installations
+ha_virtualenv_directory: /srv/homeassistant

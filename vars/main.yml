@@ -8,22 +8,28 @@
 packages:
     Debian:
         always:
-            - python3
-        nonvirtualenv:
             - gcc
+            - python3
             - python3-dev
+        virtualenv:
+            - python3-virtualenv
+            - virtualenv
+        nonvirtualenv:
             - python3-pip
     Fedora:
         always:
             - firewalld
+            - gcc
             - libselinux-python
             - python-firewall
             - python2
             - python2-dnf
             - python3
+            - python3-devel
             - redhat-rpm-config
             - which
+        virtualenv:
+            - python-virtualenv
+            - sudo
         nonvirtualenv:
-            - gcc
-            - python3-devel
             - python3-pip

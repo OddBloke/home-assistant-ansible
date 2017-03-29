@@ -9,11 +9,33 @@
   pip: name={{ item }} extra_args="--upgrade" executable=pip3
   with_items:
   - colorlog
+  when: not ha_use_virtualenv
 
 - name: install defined version of Home Assistant
   pip: name=homeassistant version={{ ha_version }} executable=pip3
-  when: ha_version is defined
+  when: ha_version is defined and not ha_use_virtualenv
 
 - name: install latest version of Home Assistant
   pip: name=homeassistant extra_args="--upgrade" executable=pip3
-  when: ha_version is undefined
+  when: ha_version is undefined and not ha_use_virtualenv
+
+- name: install required python modules (pre-install)
+  pip: name={{ item }} extra_args="--upgrade" virtualenv={{ ha_virtualenv_directory }} virtualenv_python=python3
+  with_items:
+  - colorlog
+  - six
+  when: ha_use_virtualenv
+  become: true
+  become_user: "{{ ha_user }}"
+
+- name: install defined version of Home Assistant
+  pip: name=homeassistant version={{ ha_version }} virtualenv={{ ha_virtualenv_directory }} virtualenv_python=python3
+  when: ha_version is defined and ha_use_virtualenv
+  become: true
+  become_user: "{{ ha_user }}"
+
+- name: install latest version of Home Assistant
+  pip: name=homeassistant extra_args="--upgrade" virtualenv={{ ha_virtualenv_directory }} virtualenv_python=python3
+  when: ha_version is undefined and ha_use_virtualenv
+  become: true
+  become_user: "{{ ha_user }}"
