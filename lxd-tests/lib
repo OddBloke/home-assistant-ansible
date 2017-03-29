@@ -65,6 +65,15 @@ wait_for_ha() {
     done
 }
 
+check_for_log_errors() {
+    errors="$(lxc exec local:"$CONTAINER_NAME" -- journalctl -u home-assistant | grep -c ERROR || true)"
+    if [ $errors -ne 0 ]; then
+        echo "Errors found in HA log:"
+        lxc exec local:"$CONTAINER_NAME" -- journalctl -u home-assistant | grep ERROR || true
+        exit 1
+    fi
+}
+
 run_test() {
     launch_container
     configure_container_access
@@ -74,4 +83,5 @@ run_test() {
     write_playbook
     run_ansible
     wait_for_ha
+    check_for_log_errors
 }
