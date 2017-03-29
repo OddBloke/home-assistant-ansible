@@ -57,5 +57,5 @@
   with_items:
   - pip
   when:
-  - ansible_distribution == "Fedora"
+  - ansible_distribution in ["Fedora", "Ubuntu"]
   - not ha_use_virtualenv
